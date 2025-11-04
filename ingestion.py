@@ -50,10 +50,11 @@ async def main():
             "url": "https://docs.langchain.com",
             "max_depth": 5,
             "extract_depth": "advanced",
+            "instructions": "Content on AI Agents"
         }
     )
 
-    all_docs = res
+    all_docs = [Document(page_content=result["raw_content"], metadata={"source": result['url']}) for result in res["results"]]
 
     log_success(f"TavilyCrawl: Crawled {len(all_docs)} documents successfully")
 
