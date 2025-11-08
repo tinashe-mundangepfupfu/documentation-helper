@@ -134,8 +134,6 @@ async def main():
 
     log_header("PIPELINE COMPLETE")
     log_success("Document Pipeline Completed Successfully")
-    log_header("PIPELINE COMPLETE")
-    log_success("Document Pipeline Completed Successfully")
 
     log_info(
         f"{Colors.BOLD}Summary:{Colors.END} Crawled {len(all_docs)} documents, created {len(split_docs)} chunks, and indexed them successfully.",
