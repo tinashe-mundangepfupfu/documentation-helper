@@ -60,7 +60,7 @@ async def index_documents_async(
             try:
                 await vector_store.aadd_documents(batch)
                 log_success(
-                    f"VectorStore Indexing: Successfully added batch {batch_num}/{len(batches)} to  Vector Store"
+                    f"VectorStore Indexing: Successfully added batch {batch_num}/{len(batches)} to Vector Store"
                 )
             except Exception as e:
                 log_error(f"VectorStore indexing failed to add batch {batch_num} - {e}")
