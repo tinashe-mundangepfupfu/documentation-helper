@@ -99,10 +99,41 @@ async def main():
         }
     )
 
-    all_docs = [Document(page_content=result["raw_content"], metadata={"source": result['url']}) for result in res["results"]]
+    # Filter out results that don't have valid raw_content
+    all_docs = [
+        Document(page_content=result["raw_content"], metadata={"source": result['url']})
+        for result in res["results"]
+        if result.get("raw_content") is not None and result["raw_content"].strip()
+    ]
 
     log_success(f"TavilyCrawl: Crawled {len(all_docs)} documents successfully")
 
+    # Split documents into chunks
+    log_header("DOCUMENT CHUNKING PHASE")
+    log_info (
+        f"Text Splitter: Processing {len(all_docs)} documents with 4000 chunck size and 200 overlap",
+        Colors.YELLOW,
+    )
+
+    text_splitter = RecursiveCharacterTextSplitter(
+        chunk_size=4000,
+        chunk_overlap=200,
+    )
+
+    split_docs = text_splitter.split_documents(all_docs)
+    log_success(f"Text Splitter: Created {len(split_docs)} chunks from {len(all_docs)} document chunks successfully")
+
+    # Process documents asynchronously
+    await index_documents_async(split_docs, batch_size=500)
+
+    log_header("PIPELINE COMPLETE")
+    log_success("Document Pipeline Completed Successfully")
+    log_header("PIPELINE COMPLETE")
+    log_success("Document Pipeline Completed Successfully")
+
+    log_info(
+        f"{Colors.BOLD}Summary:{Colors.END} Crawled {len(all_docs)} documents, created {len(split_docs)} chunks, and indexed them successfully.",
+        Colors.GREEN)
 
 if __name__ == "__main__":
     asyncio.run(main())
