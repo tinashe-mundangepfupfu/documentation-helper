@@ -99,13 +99,13 @@ async def main():
             "url": "https://docs.langchain.com",
             "max_depth": 5,
             "extract_depth": "advanced",
-            "instructions": "Content on AI Agents"
+            "instructions": "Content on AI Agents",
         }
     )
 
     # Filter out results that don't have valid raw_content
     all_docs = [
-        Document(page_content=result["raw_content"], metadata={"source": result['url']})
+        Document(page_content=result["raw_content"], metadata={"source": result["url"]})
         for result in res["results"]
         if result.get("raw_content") is not None and result["raw_content"].strip()
     ]
@@ -114,7 +114,7 @@ async def main():
 
     # Split documents into chunks
     log_header("DOCUMENT CHUNKING PHASE")
-    log_info (
+    log_info(
         f"Text Splitter: Processing {len(all_docs)} documents with 4000 chunck size and 200 overlap",
         Colors.YELLOW,
     )
@@ -125,7 +125,9 @@ async def main():
     )
 
     split_docs = text_splitter.split_documents(all_docs)
-    log_success(f"Text Splitter: Created {len(split_docs)} chunks from {len(all_docs)} document chunks successfully")
+    log_success(
+        f"Text Splitter: Created {len(split_docs)} chunks from {len(all_docs)} document chunks successfully"
+    )
 
     # Process documents asynchronously
     await index_documents_async(split_docs, batch_size=500)
@@ -137,7 +139,9 @@ async def main():
 
     log_info(
         f"{Colors.BOLD}Summary:{Colors.END} Crawled {len(all_docs)} documents, created {len(split_docs)} chunks, and indexed them successfully.",
-        Colors.GREEN)
+        Colors.GREEN,
+    )
+
 
 if __name__ == "__main__":
     asyncio.run(main())
