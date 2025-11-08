@@ -1,8 +1,7 @@
 import asyncio
 import os
 import ssl
-from operator import truediv
-from typing import Any, Dict, List
+from typing import List
 from langchain_huggingface import HuggingFaceEmbeddings
 
 import certifi
@@ -10,8 +9,6 @@ from dotenv import load_dotenv
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_chroma import Chroma
 from langchain_core.documents import Document
-from langchain_anthropic import ChatAnthropic
-from langchain_pinecone import PineconeVectorStore
 from langchain_tavily import TavilyCrawl, TavilyExtract, TavilyMap
 
 from logger import Colors, log_error, log_header, log_info, log_success, log_warning
@@ -38,17 +35,24 @@ tavily_map = TavilyMap(max_depth=5, max_breadth=20, max_pages=1000)
 tavily_crawl = TavilyCrawl()
 
 
-async def index_documents_async(documents: List[Document], batch_size: int = 50) -> None:
+async def index_documents_async(
+    documents: List[Document], batch_size: int = 50
+) -> None:
     """Indexes documents into the vector store asynchronously."""
     log_header("VECTOR STORE INDEXING PHASE")
     log_info(
         f"VectorStore: Indexing {len(documents)} documents into Pinecone Vector Store",
         Colors.DARKCYAN,
     )
-    
-    batches = [documents[i:i + batch_size] for i in range(0, len(documents), batch_size)]
 
-    log_info(f"VectorStore: Indexing {len(batches)} batches of {batch_size} documents", Colors.YELLOW)
+    batches = [
+        documents[i : i + batch_size] for i in range(0, len(documents), batch_size)
+    ]
+
+    log_info(
+        f"VectorStore: Indexing {len(batches)} batches of {batch_size} documents",
+        Colors.YELLOW,
+    )
     semaphore = asyncio.Semaphore(5)  # Max 5 concurrent batches
 
     async def add_batch(batch: List[Document], batch_num: int) -> bool:
@@ -64,7 +68,7 @@ async def index_documents_async(documents: List[Document], batch_size: int = 50)
             return True
 
     # Process batches concurrently
-    tasks = [add_batch(batch, i + 1) for i, batch in enumerate (batches)]
+    tasks = [add_batch(batch, i + 1) for i, batch in enumerate(batches)]
     results = await asyncio.gather(*tasks, return_exceptions=True)
 
     # Count successful batches
