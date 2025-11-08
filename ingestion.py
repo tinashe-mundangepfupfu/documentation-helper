@@ -115,7 +115,7 @@ async def main():
     # Split documents into chunks
     log_header("DOCUMENT CHUNKING PHASE")
     log_info(
-        f"Text Splitter: Processing {len(all_docs)} documents with 4000 chunck size and 200 overlap",
+        f"Text Splitter: Processing {len(all_docs)} documents with 4000 chunk size and 200 overlap",
         Colors.YELLOW,
     )
 
