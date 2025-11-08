@@ -41,7 +41,7 @@ async def index_documents_async(
     """Indexes documents into the vector store asynchronously."""
     log_header("VECTOR STORE INDEXING PHASE")
     log_info(
-        f"VectorStore: Indexing {len(documents)} documents into Pinecone Vector Store",
+        f"VectorStore: Indexing {len(documents)} documents into Chroma Vector Store",
         Colors.DARKCYAN,
     )
 
