@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.2.0](https://github.com/tinashe-mundangepfupfu/documentation-helper/compare/v0.1.0...v0.2.0) (2025-11-16)
+
+
+### Features
+
+* add backend module structure ([0c56af7](https://github.com/tinashe-mundangepfupfu/documentation-helper/commit/0c56af7913c6a87233a45fe248fb3cbb9811f2f8))
+* **core:** add chat history support to LLM ([f41bf1a](https://github.com/tinashe-mundangepfupfu/documentation-helper/commit/f41bf1a852f95b8d08b9da811e4035b10e2a1804))
+* implement retrieval QA with Anthropic Claude ([8296513](https://github.com/tinashe-mundangepfupfu/documentation-helper/commit/82965137800e16fe541138357b3e05a1bcb4f6b9))
+* **ui:** add user profile sidebar with name, email, and profile picture ([031161d](https://github.com/tinashe-mundangepfupfu/documentation-helper/commit/031161d4675117e1c10901023ba8653da825a3f0))
+
 ## 0.1.0 (2025-11-08)
 
 
