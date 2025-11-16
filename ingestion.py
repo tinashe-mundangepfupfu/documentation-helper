@@ -2,13 +2,12 @@ import asyncio
 import os
 import ssl
 from typing import List
-from langchain_huggingface import HuggingFaceEmbeddings
 
 import certifi
 from dotenv import load_dotenv
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_chroma import Chroma
+from langchain_classic.text_splitter import RecursiveCharacterTextSplitter
 from langchain_core.documents import Document
+from langchain_openai import OpenAIEmbeddings
 from langchain_pinecone import PineconeVectorStore
 from langchain_tavily import TavilyCrawl, TavilyExtract, TavilyMap
 
@@ -21,14 +20,14 @@ ssl_context = ssl.create_default_context(cafile=certifi.where())
 os.environ["SSL_CERT_FILE"] = certifi.where()
 os.environ["REQUESTS_CA_BUNDLE"] = certifi.where()
 
-EMBEDDING_MODEL = "sentence-transformers/all-mpnet-base-v2"
-embeddings = HuggingFaceEmbeddings(model_name=EMBEDDING_MODEL)
+EMBEDDING_MODEL = "text-embedding-3-large"
+embeddings = OpenAIEmbeddings(model=EMBEDDING_MODEL, dimensions=1024)
 
 # vector_store = Chroma(persist_directory="chroma_db", embedding_function=embeddings)
 
 # use pinecone instead of local vector store
 vector_store = PineconeVectorStore(
-    index_name="doc-index", embedding=embeddings
+    index_name="glorious-elm", embedding=embeddings
 )
 
 tavily_extract = TavilyExtract()

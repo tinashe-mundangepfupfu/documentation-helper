@@ -1,20 +1,20 @@
 from dotenv import load_dotenv
-from langchain.chains.retrieval import create_retrieval_chain
+from langchain_classic.chains import create_retrieval_chain
+from langchain_classic.chains.combine_documents import create_stuff_documents_chain
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_pinecone import PineconeVectorStore
-
-load_dotenv()
-from langchain.chains.combine_documents import create_stuff_documents_chain
-
-from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_openai import OpenAIEmbeddings
 from langchain_anthropic import ChatAnthropic
 
-INDEX_NAME = "doc-index"
-EMBEDDING_MODEL = "sentence-transformers/all-mpnet-base-v2"
+load_dotenv()
+
+INDEX_NAME = "glorious-elm"
+EMBEDDING_MODEL = "text-embedding-3-large"
+
 
 
 def run_llm(query: str):
-    embeddings = HuggingFaceEmbeddings(model_name=EMBEDDING_MODEL)
+    embeddings = OpenAIEmbeddings(model=EMBEDDING_MODEL, dimensions=1024)
     docsearch = PineconeVectorStore(index_name=INDEX_NAME, embedding=embeddings)
     chat = ChatAnthropic(model_name="claude-haiku-4-5-20251001", temperature=0)
 
