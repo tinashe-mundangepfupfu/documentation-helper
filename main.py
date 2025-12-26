@@ -99,35 +99,36 @@ def render_user_sidebar():
             st.session_state["user_profile_picture"] = None
         
         # Profile picture section
-        st.subheader("Profile Picture")
+        st.markdown("### Profile Picture")
         uploaded_file = st.file_uploader(
             "Upload profile picture",
             type=['png', 'jpg', 'jpeg'],
             key="profile_upload",
-            help="Upload a profile picture (PNG, JPG, or JPEG)"
+            help="Upload a profile picture (PNG, JPG, or JPEG)",
+            label_visibility="collapsed"
         )
         
         if uploaded_file is not None:
             # Read and display the uploaded image
             image = Image.open(uploaded_file)
             st.session_state["user_profile_picture"] = image
-            st.image(image, width=150, use_container_width=True)
+            st.image(image, width=150)
         elif st.session_state["user_profile_picture"] is not None:
             # Display existing profile picture
-            st.image(st.session_state["user_profile_picture"], width=150, use_container_width=True)
+            st.image(st.session_state["user_profile_picture"], width=150)
         else:
-            # Display placeholder
-            st.info("No profile picture uploaded")
+            # Display placeholder or nothing
+            pass
         
         st.divider()
         
         # User information form
-        st.subheader("User Information")
+        st.markdown("### User Information")
         name = st.text_input(
             "Name",
             value=st.session_state["user_name"],
             key="name_input",
-            placeholder="Enter your name"
+            placeholder="John Doe"
         )
         st.session_state["user_name"] = name
         
@@ -135,7 +136,7 @@ def render_user_sidebar():
             "Email",
             value=st.session_state["user_email"],
             key="email_input",
-            placeholder="Enter your email"
+            placeholder="john@example.com"
         )
         st.session_state["user_email"] = email
         
@@ -143,7 +144,7 @@ def render_user_sidebar():
         
         # Display current user info summary
         if st.session_state["user_name"] or st.session_state["user_email"]:
-            st.subheader("Current Profile")
+            st.markdown("### Current Profile")
             if st.session_state["user_name"]:
                 st.write(f"**Name:** {st.session_state['user_name']}")
             if st.session_state["user_email"]:
